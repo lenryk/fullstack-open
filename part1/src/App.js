@@ -1,50 +1,65 @@
+import { useState } from 'react'
+
+function Heading({children}) {
+    return <h1>{children}</h1>
+}
+
+function Button({children, onClick}) {
+    return <button onClick={onClick}>{children}</button>
+}
+
+function StatisticLine({text, value}) {
+    return (
+        <>
+            <td>{text}</td>
+            <td>{value}</td>
+        </>
+    )
+}
+
+function Statistics({good, neutral, bad, total}) {
+    return (
+        <table>
+            <tbody>
+                <tr>
+                    <StatisticLine text="good" value={good} />
+                </tr>
+                <tr>
+                    <StatisticLine text="neutral" value={neutral} />
+                </tr>
+                <tr>
+                    <StatisticLine text="bad" value={bad} />
+                </tr>
+                <tr>
+                    <StatisticLine text="all" value={total} />
+                </tr>
+                <tr>
+                    <StatisticLine text="average" value={(good - bad) / 9} />
+                </tr>
+                <tr>
+                    <StatisticLine text="positive" value={(6 / total) * 100 + ' %'} />
+                </tr>
+            </tbody>
+        </table>
+    )
+}
+
 const App = () => {
-    const course = {
-        name: 'Half Stack application development',
-        parts: [
-            {
-                name: 'Fundamentals of React',
-                exercises: 10
-            },
-            {
-                name: 'Using props to pass data',
-                exercises: 7
-            },
-            {
-                name: 'State of a component',
-                exercises: 14
-            }
-        ]
-    }
-
-    function Header({course}) {
-        return <h1>{course}</h1>
-    }
-
-    function Part({part, exercise}) {
-        return <p>{part} {exercise}</p>
-    }
-
-    function Content({part1, exercises1, part2, exercises2, part3, exercises3}) {
-        return (
-            <>
-                <Part part={part1} exercise={exercises1} />
-                <Part part={part2} exercise={exercises2} />
-                <Part part={part3} exercise={exercises3} />
-            </>
-            )
-    }
-
-    function Total({exercises1, exercises2, exercises3}) {
-        return <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
-    }
+    // save clicks of each button to its own state
+    const [good, setGood] = useState(0)
+    const [neutral, setNeutral] = useState(0)
+    const [bad, setBad] = useState(0)
+    const total = good + neutral + bad
 
     return (
-        <div>
-            <Header course={course.name} />
-            <Content part1={course.parts[0].name} exercises1={course.parts[0].exercises} part2={course.parts[1].name} exercises2={course.parts[1].exercises} part3={course.parts[2].name} exercises3={course.parts[2].exercises}/>
-            <Total exercises1={course.parts[0].exercises} exercises2={course.parts[1].exercises} exercises3={course.parts[2].exercises} />
-        </div>
+        <>
+            <Heading>give feedback</Heading>
+            <Button onClick={() => setGood(good +1)}>good</Button>
+            <Button onClick={() => setNeutral(neutral +1)}>neutral</Button>
+            <Button onClick={() => setBad(bad +1)}>bad</Button>
+            <Heading>statistics</Heading>
+            { total ? <Statistics good={good} neutral={neutral} bad={bad} total={total}/> : <p>no stats</p>}
+        </>
     )
 }
 
