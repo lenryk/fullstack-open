@@ -11,14 +11,25 @@ const App = () => {
         'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.'
     ]
 
-    const [state, setState] = useState({selected: 0, 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0 })
+    const [state, setState] = useState({selected: 0, votes: { 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0}})
+    const [mostVotes, setMostVotes] = useState({index:0, votes: 0})
+
+    for (const [key, value] of Object.entries(state.votes)) {
+        if (value > mostVotes.votes) {
+            setMostVotes(() => ({index: key, votes: value}))
+        }
+    }
 
     return (
         <div>
+            <h1>Anecdote of the day</h1>
             <p>{anecdotes[state.selected]}</p>
-            <p>has {state[state.selected]} votes</p>
-            <button onClick={() => setState({...state, [state.selected]: state[state.selected] + 1})}>vote</button>
+            <p>has {state.votes[state.selected]} votes</p>
+            <button onClick={() => setState({...state, votes: { ...state.votes, [state.selected]: state.votes[state.selected] + 1}})}>vote</button>
             <button onClick={() => setState({...state, selected: Math.floor(Math.random() * 7)})}>next anecdote</button>
+            <h1>Anecdote with most votes</h1>
+            <p>{anecdotes[mostVotes.index]}</p>
+            <p>has {mostVotes.votes} votes</p>
         </div>
     )
 }
