@@ -1,4 +1,5 @@
 import Course from "./components/Course"
+import Sum from "./components/Sum"
 
 const App = () => {
     const course = {
@@ -19,11 +20,21 @@ const App = () => {
                 name: 'State of a component',
                 exercises: 14,
                 id: 3
+            },
+            {
+                name: 'Redux',
+                exercises: 11,
+                id: 4
             }
         ]
     }
 
-    return <Course course={course} />
+    return (
+        <>
+            <Course course={course} />
+            <Sum course={course} />
+        </>
+    )
 }
 
 export default App
