@@ -8,7 +8,12 @@ const App = () => {
 
     function handleAdd(event) {
         event.preventDefault()
-        setPersons([...persons, {name:newName}])
+
+        if (persons.find(obj => obj.name === newName)) {
+            alert(`${newName} is already added to the phonebook`)
+        } else {
+            setPersons([...persons, {name:newName}])
+        }
     }
 
     return (
