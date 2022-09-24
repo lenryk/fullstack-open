@@ -2,9 +2,6 @@ import React from "react";
 import Sum from "../Sum"
 
 function Course({course}) {
-
-    console.log('course is', course)
-
     return (
         <>
             <h1>{course.name}</h1>
