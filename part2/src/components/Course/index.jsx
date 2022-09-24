@@ -1,6 +1,9 @@
 import React from "react";
+import Sum from "../Sum"
 
 function Course({course}) {
+
+    console.log('course is', course)
 
     return (
         <>
@@ -8,6 +11,7 @@ function Course({course}) {
             {course.parts.map(({name, exercises, id}) => {
                 return <p key={id}>{name} {exercises}</p>
             })}
+            <Sum course={course} />
         </>
     )
 }
