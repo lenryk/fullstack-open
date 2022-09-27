@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Persons from "./components/Persons"
 import PersonForm from "./components/PersonForm"
 import Filter from "./components/Filter"
+import api from "./hooks/backend"
 
 const App = () => {
     const [persons, setPersons] = useState()
@@ -11,17 +11,33 @@ const App = () => {
     const [filter, setFilter] = useState('')
 
     useEffect(() => {
-        axios.get('http://localhost:3001/persons')
-            .then(({data}) => setPersons(data))
+        api.listAll()
+            .then((data) => setPersons(data))
     }, [])
 
     function handleAdd(event) {
         event.preventDefault()
 
-        if (persons.find(obj => obj.name === newName)) {
-            alert(`${newName} is already added to the phonebook`)
+        const {id} = persons.find(obj => obj.name === newName)
+
+        if (id) {
+            if (window.confirm(`${newName} is already added to phonebook, replace old number with the new one?`)) {
+                api.updatePerson(id, {name: newName, number: newNumber, id}).then(() => {
+                    api.listAll().then((data) => setPersons(data))
+                    window.alert('Person updated!')
+                })
+            }
         } else {
-            setPersons([...persons, {name:newName, number: newNumber}])
+            api.addPerson({name:newName, number: newNumber}).then(() => console.log('added'))
+        }
+    }
+
+    function handleDelete(person) {
+        if (window.confirm(`Do you really want to delete ${person.name}?`)) {
+            api.deletePerson(person.id).then(() => {
+                api.listAll().then((data) => setPersons(data))
+                window.alert('Person deleted!')
+            })
         }
     }
 
@@ -49,7 +65,7 @@ const App = () => {
                        newNumber={newNumber}
             />
             <h2>Numbers</h2>
-            <Persons filter={filter} persons={persons} />
+            <Persons filter={filter} persons={persons} handleDelete={handleDelete}/>
         </div>
     )
 }
