@@ -51,16 +51,29 @@ app.delete('/api/persons/:id', (request, response) => {
 app.post('/api/persons', (request, response) => {
     const body = request.body
 
-    if (!body.content) {
+    if (!body.name) {
         return response.status(400).json({
-            error: 'no content'
+            error: 'missing name'
+        })
+    }
+
+    if (!body.number) {
+        return response.status(400).json({
+            error: 'missing number'
+        })
+    }
+
+    const checkDuplicate = persons.find((person) => person.name === body.name)
+
+    if (checkDuplicate) {
+        return response.status(400).json({
+            error: 'name must be unique'
         })
     }
 
     const newPerson = {
-        content: body.content,
-        important: body.important || false,
-        date: new Date(),
+        name: body.name,
+        number: body.number,
         id: Math.floor(Math.random() * 1000),
     }
 
