@@ -1,7 +1,8 @@
 import React from "react"
 
-function Notification({data: {message, type}}) {
-    if (!message) return null
+function Notification({data}) {
+    if (!data?.message) return null
+    const {message, type} = data
 
     const styles = {
         color: type,
