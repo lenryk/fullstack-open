@@ -11,7 +11,7 @@ function favoriteBlog(blogs) {
 }
 
 function mostBlogs(blogs) {
-     const authors = blogs.reduce((prev, current) => {
+    const authors = blogs.reduce((prev, current) => {
          return ({ ...prev, [current.author]: (prev[current.author] + 1) || 1 })
         }, {})
 
@@ -19,6 +19,15 @@ function mostBlogs(blogs) {
     return { author: sorted.at(-1)[0], blogs: sorted.at(-1)[1] }
 }
 
+function mostLikes(blogs) {
+    const authors = blogs.reduce((prev, current) => {
+        return ({ ...prev, [current.author]: (prev[current.author] + current.likes) || current.likes })
+    }, {})
+
+    const sorted = Object.entries(authors).sort((a,b) => a[1] - b[1])
+    return { author: sorted.at(-1)[0], likes: sorted.at(-1)[1] }
+}
+
 module.exports = {
-    dummy, totalLikes, favoriteBlog, mostBlogs
+    dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
 }
