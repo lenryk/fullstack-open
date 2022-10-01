@@ -41,17 +41,24 @@ app.delete('/api/persons/:id', (request, response, next) => {
 app.post('/api/persons', (request, response, next) => {
     const {name, number} = request.body
 
-    const newPerson = new Person({
-        name,
-        number,
-    })
 
-    newPerson.save()
-        .then((savedPerson) => {
-        response.json(savedPerson)
-    })
-    .catch((error) => next(error))
+    Person.find({name}).then( (resp) => {
+        if(resp[0]?.name === name) {
+             response.status(400).json({error: 'name already exists use PUT to update'})
+        } else {
+            const newPerson = new Person({
+                name,
+                number,
+            })
 
+            newPerson.save()
+                .then((savedPerson) => {
+                     response.json(savedPerson)
+                })
+                .catch((error) => next(error))
+        }
+
+    }).catch((err) => console.log(err))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
