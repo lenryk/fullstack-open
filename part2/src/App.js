@@ -24,29 +24,37 @@ const App = () => {
 
         if (id) {
             if (window.confirm(`${newName} is already added to phonebook, replace old number with the new one?`)) {
-                api.updatePerson(id, {name: newName, number: newNumber, id}).then(() => {
+                api.updatePerson(id, {name: newName, number: newNumber, id})
+                .then(() => {
                     setMessage({message:`${newName} was successfully updated!`, type: 'green'})
                     setTimeout(() => {
                         setMessage(null)
                     }, 5000)
                     setNewName('')
                     setNewNumber('')
-                }).catch(() => {
-                    setMessage({message:`Information for ${newName} has already been deleted from the server!`, type: 'red'})
+                }).catch((error) => {
+                    setMessage({message:error.response.data.error, type: 'red'})
                     setTimeout(() => {
                         setMessage({message: '', type: ''})
                     }, 5000)
                 }).finally(() => api.listAll().then((data) => setPersons(data)))
             }
         } else {
-            api.addPerson({name:newName, number: newNumber}).then(() => {
-                api.listAll().then((data) => setPersons(data))
-                setMessage({message:`${newName} was successfully added!`, type: 'green'})
+            api.addPerson({name:newName, number: newNumber})
+            .then(() => {
+                api.listAll()
+                .then((data) => setPersons(data))
+                    setMessage({message:`${newName} was successfully added!`, type: 'green'})
+                    setTimeout(() => {
+                        setMessage({message: '', type: ''})
+                    }, 5000)
+                    setNewName('')
+                    setNewNumber('')
+            }).catch((error) => {
+                setMessage({message: error.response.data.error, type: 'red'})
                 setTimeout(() => {
                     setMessage({message: '', type: ''})
                 }, 5000)
-                setNewName('')
-                setNewNumber('')
             })
         }
     }

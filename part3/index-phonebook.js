@@ -10,18 +10,6 @@ app.use(express.json())
 morgan.token('body', function (req) { return JSON.stringify(req.body) })
 app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body'))
 
-const errorHandler = (error, request, response, next) => {
-    console.error(error.message)
-
-    if (error.name === 'CastError') {
-        return response.status(400).send({ error: 'malformatted id' })
-    }
-
-    next(error)
-}
-
-app.use(errorHandler)
-
 app.get('/api/persons', (request, response) => {
     Person.find({}).then(persons => {
         response.json(persons)
@@ -50,48 +38,50 @@ app.delete('/api/persons/:id', (request, response, next) => {
         .catch(error => next(error))
 })
 
-app.post('/api/persons', (request, response) => {
-    const body = request.body
-
-    if (!body.name) {
-        return response.status(400).json({
-            error: 'missing name'
-        })
-    }
-
-    if (!body.number) {
-        return response.status(400).json({
-            error: 'missing number'
-        })
-    }
+app.post('/api/persons', (request, response, next) => {
+    const {name, number} = request.body
 
     const newPerson = new Person({
-        name: body.name,
-        number: body.number,
-        id: Math.floor(Math.random() * 1000),
+        name,
+        number,
     })
 
-    newPerson.save((savedPerson) => {
+    newPerson.save()
+        .then((savedPerson) => {
         response.json(savedPerson)
     })
+    .catch((error) => next(error))
 
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-    const body = request.body
+    const {name, number} = request.body
 
     const newPerson = {
-        name: body.name,
-        number: body.number,
+        name,
+        number,
     }
 
-    console.log(request.params.id)
-    Person.findByIdAndUpdate(request.params.id, newPerson, { new: true })
+    Person.findByIdAndUpdate(request.params.id, newPerson, { new: true, runValidators: true, context: 'query'})
         .then(updatedPerson => {
             response.json(updatedPerson)
         })
-        .catch(error => next(error))
+        .catch((error) => next(error))
 })
+
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message })
+    }
+
+    next(error)
+}
+
+app.use(errorHandler)
 
 
 const PORT = 3001
