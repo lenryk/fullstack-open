@@ -13,6 +13,13 @@ const initialBlogs = [
     }
 ]
 
+const newBlog = {
+    title: "my new blog post",
+    author: "martin",
+    url: "https://google.co.uk",
+    likes: 21
+}
+
 module.exports = {
-    initialBlogs
+    initialBlogs, newBlog
 }

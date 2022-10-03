@@ -31,6 +31,13 @@ test('blog json object has id property', async () => {
     expect(response.body[0]['_id']).toBeDefined()
 })
 
+test('adds blog to database', async () => {
+    await api.post('/api/blogs').send(helper.newBlog)
+    const response = await api.get('/api/blogs')
+
+    expect(response.body.length).toBe(3)
+    expect(response.body.at(-1).title).toStrictEqual('my new blog post')
+})
 
 afterAll(() => {
     mongoose.connection.close()
