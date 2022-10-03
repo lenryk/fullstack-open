@@ -51,6 +51,16 @@ test('rejects blog with missing title or url props', async () => {
     expect(response.status).toBe(400)
 })
 
+test('deletes blog post', async () => {
+    const response = await api.get('/api/blogs')
+
+    await api.post(`/api/blogs/${response.body[0]['_id']}`)
+
+    const blogsAfterDelete = await api.get('/api/blogs')
+
+    expect(blogsAfterDelete.body.length).toBe(2)
+})
+
 
 afterAll(() => {
     mongoose.connection.close()
