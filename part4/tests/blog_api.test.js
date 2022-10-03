@@ -39,6 +39,12 @@ test('adds blog to database', async () => {
     expect(response.body.at(-1).title).toStrictEqual('my new blog post')
 })
 
+test('checks if likes property is present', async () => {
+    const response = await api.get('/api/blogs')
+
+    expect(response.body[0]['likes']).not.toStrictEqual(0)
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
