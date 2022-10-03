@@ -45,6 +45,13 @@ test('checks if likes property is present', async () => {
     expect(response.body[0]['likes']).not.toStrictEqual(0)
 })
 
+test('rejects blog with missing title or url props', async () => {
+    const response = await api.post('/api/blogs').send(helper.invalidNewBlog)
+
+    expect(response.status).toBe(400)
+})
+
+
 afterAll(() => {
     mongoose.connection.close()
 })

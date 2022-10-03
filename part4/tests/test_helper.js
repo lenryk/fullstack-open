@@ -20,6 +20,12 @@ const newBlog = {
     likes: 21
 }
 
+const invalidNewBlog = {
+    author: "sam",
+    url: "https://google.co",
+    likes: 69
+}
+
 module.exports = {
-    initialBlogs, newBlog
+    initialBlogs, newBlog, invalidNewBlog
 }
