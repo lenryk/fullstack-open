@@ -6,11 +6,11 @@ const helper = require('../tests/test_helper')
 
 const api = supertest(app)
 
-beforeEach(async () => {
+beforeAll(async () => {
     await Blog.deleteMany({})
     console.log('cleared test DB')
 
-    helper.initialBlogs.forEach(async (blog) => {
+    await helper.initialBlogs.forEach(async (blog) => {
         let blogObject = new Blog(blog)
         await blogObject.save()
         console.log('saved blog post')
@@ -23,6 +23,12 @@ test('blogs are returned as json', async () => {
     expect(response.body.length).toBe(2)
     expect(response.header['content-type']).toContain('application/json')
 
+})
+
+test('blog json object has id property', async () => {
+    const response = await api.get('/api/blogs')
+
+    expect(response.body[0]['_id']).toBeDefined()
 })
 
 
