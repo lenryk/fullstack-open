@@ -26,6 +26,13 @@ const invalidNewBlog = {
     likes: 69
 }
 
+const updatedBlogPost = {
+    title: "this has been updated",
+    author: "gary",
+    url: "https://google.ca",
+    likes: 29
+}
+
 module.exports = {
-    initialBlogs, newBlog, invalidNewBlog
+    initialBlogs, newBlog, invalidNewBlog, updatedBlogPost
 }

@@ -61,6 +61,16 @@ test('deletes blog post', async () => {
     expect(blogsAfterDelete.body.length).toBe(2)
 })
 
+test('updates blog post', async () => {
+    const response = await api.get('/api/blogs')
+
+    await api.put(`/api/blogs/${response.body[0]['_id']}`).send(helper.updatedBlogPost)
+
+    const updatedBlog = await api.get(`/api/blogs/${response.body[0]['_id']}`)
+
+    expect(updatedBlog.body.title).toBe('this has been updated')
+})
+
 
 afterAll(() => {
     mongoose.connection.close()
