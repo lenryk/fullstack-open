@@ -33,6 +33,12 @@ const updatedBlogPost = {
     likes: 29
 }
 
+const invalidUser = {
+    name: 'Jeff',
+    username: 'Mi',
+    password: 'hackme'
+}
+
 module.exports = {
-    initialBlogs, newBlog, invalidNewBlog, updatedBlogPost
+    initialBlogs, newBlog, invalidNewBlog, updatedBlogPost, invalidUser
 }

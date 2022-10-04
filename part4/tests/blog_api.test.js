@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const helper = require('../tests/test_helper')
 
 const api = supertest(app)
@@ -69,6 +70,23 @@ test('updates blog post', async () => {
     const updatedBlog = await api.get(`/api/blogs/${response.body[0]['_id']}`)
 
     expect(updatedBlog.body.title).toBe('this has been updated')
+})
+
+test('cannot create user without valid details', async () => {
+    const response = await api.post('/api/users').send(helper.invalidUser)
+
+    expect(response.status).toBe(400)
+    expect(response.error.text).toBe('{"message":"password & username must be at least 3 chars"}')
+})
+
+test('invalid users are not added to db', async () => {
+    await User.deleteMany({})
+
+    await api.post('/api/users').send(helper.invalidUser)
+
+    const response = await api.get('/api/users')
+
+    expect(response.body.length).toBe(0)
 })
 
 
