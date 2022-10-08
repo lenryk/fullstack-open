@@ -50,22 +50,8 @@ blogsRouter.get('/:id', async(request, response) => {
     response.status(200).json(blog)
 })
 
-blogsRouter.post('/:id', async(request, response) => {
-    if(!request.token) {
-        return response.status(401).json({message: 'not authorized'})
-    }
-
-    let decodedToken
-    try {
-        decodedToken = jwt.verify(request.token, process.env.SECRET)
-
-    } catch {
-        return response.status(401).json({message: 'invalid auth token'})
-    }
-
-    const user = await User.findById(decodedToken.id)
-
-    if(user._id.toString() === decodedToken.id) {
+blogsRouter.delete('/:id', async(request, response) => {
+    if(request.user._id) {
         let findBlog
         try {
             findBlog = await Blog.findByIdAndDelete(request.params.id)
