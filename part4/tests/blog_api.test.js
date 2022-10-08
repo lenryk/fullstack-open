@@ -4,6 +4,8 @@ const app = require('../app')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const helper = require('../tests/test_helper')
+const bcrypt = require('bcrypt')
+
 
 const api = supertest(app)
 
@@ -16,6 +18,20 @@ beforeAll(async () => {
         await blogObject.save()
         console.log('saved blog post')
     })
+
+    await User.deleteMany({})
+    console.log('deleted all users')
+
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(helper.userDetails.password, saltRounds)
+
+    const newUser = new User({
+        ...helper.userDetails,
+        passwordHash,
+    })
+
+    await newUser.save()
+    console.log('new user added')
 })
 
 test('blogs are returned as json', async () => {
@@ -29,15 +45,24 @@ test('blogs are returned as json', async () => {
 test('blog json object has id property', async () => {
     const response = await api.get('/api/blogs')
 
-    expect(response.body[0]['_id']).toBeDefined()
+    expect(response.body[0]['id']).toBeDefined()
 })
 
 test('adds blog to database', async () => {
-    await api.post('/api/blogs').send(helper.newBlog)
-    const response = await api.get('/api/blogs')
+    const authToken = await api.post('/api/login').send(helper.userDetails)
+
+    await api.post('/api/blogs').auth(authToken.body.token, {type: 'bearer'}).send(helper.newBlog)
+
+    const response = await api.get('/api/blogs').auth(authToken.body.token, {type: 'bearer'})
 
     expect(response.body.length).toBe(3)
     expect(response.body.at(-1).title).toStrictEqual('my new blog post')
+})
+
+test('doesnt add a blog if no auth token', async () => {
+    const response = await api.post('/api/blogs').send(helper.newBlog)
+
+    expect(response.status).toBe(401)
 })
 
 test('checks if likes property is present', async () => {

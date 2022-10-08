@@ -39,6 +39,12 @@ const invalidUser = {
     password: 'hackme'
 }
 
+const userDetails = {
+    username: 'mike2',
+    name: 'mike',
+    password: 'test'
+}
+
 module.exports = {
-    initialBlogs, newBlog, invalidNewBlog, updatedBlogPost, invalidUser
+    initialBlogs, newBlog, invalidNewBlog, updatedBlogPost, invalidUser, userDetails
 }

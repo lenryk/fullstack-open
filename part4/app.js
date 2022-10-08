@@ -22,7 +22,7 @@ app.use(express.static('build'))
 app.use(express.json())
 
 app.use('/api/blogs/:id', middleware.tokenExtractor, middleware.userExtractor, blogsRouter)
-app.use('/api/blogs', blogsRouter)
+app.use('/api/blogs', middleware.tokenExtractor, blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 
