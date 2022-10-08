@@ -51,9 +51,35 @@ blogsRouter.get('/:id', async(request, response) => {
 })
 
 blogsRouter.post('/:id', async(request, response) => {
-    await Blog.findByIdAndDelete(request.params.id)
+    if(!request.token) {
+        return response.status(401).json({message: 'not authorized'})
+    }
 
-    response.status(200).json({message: 'blog deleted'})
+    let decodedToken
+    try {
+        decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+    } catch {
+        return response.status(401).json({message: 'invalid auth token'})
+    }
+
+    const user = await User.findById(decodedToken.id)
+
+    if(user._id.toString() === decodedToken.id) {
+        let findBlog
+        try {
+            findBlog = await Blog.findByIdAndDelete(request.params.id)
+        } catch {
+            return response.status(400).json({message: 'invalid blog id'})
+        }
+        if (!findBlog) {
+            return response.status(200).json({message: 'invalid blog id'})
+        }
+        response.status(200).json({message: 'blog deleted'})
+    } else {
+        response.status(401).json({message: 'you can only delete your own blogs'})
+
+    }
 })
 
 blogsRouter.put('/:id', async (request, response) => {
