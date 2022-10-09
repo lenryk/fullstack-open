@@ -6,4 +6,11 @@ async function getAll() {
   return response.data
 }
 
-export default getAll
+async function createBlog(objData) {
+  const user = JSON.parse(localStorage.getItem('user'))
+  console.log(user, user.token)
+  const response = await axios.post(baseUrl, objData, {headers: { 'Authorization': `Bearer ${user.token}`}})
+  return response.data
+}
+
+export {getAll, createBlog}
