@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
-import {getAll, createBlog, updateBlog} from './services/blogs'
+import {getAll, createBlog, updateBlog, deleteBlog} from './services/blogs'
 import loginService from './services/login'
 import AddBlogForm from './components/AddBlogForm'
 
@@ -11,9 +11,6 @@ const App = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState(null)
-
-
-
     const [viewBlogForm, setViewBlogForm] = useState(false)
 
     async function getBlogs() {
@@ -79,6 +76,23 @@ const App = () => {
         }
     }
 
+    async function handleDelete(blogObj) {
+        try {
+            await deleteBlog(blogObj.id)
+            getBlogs()
+            setErrorMessage(`Deleted blog ${blogObj.title}`)
+            setTimeout(() => {
+                setErrorMessage(null)
+            }, 5000)
+        } catch(err) {
+            console.log(err)
+            setErrorMessage('Error deleting blog :(')
+            setTimeout(() => {
+                setErrorMessage(null)
+            }, 5000)
+        }
+    }
+
     function handleLogout() {
         setUser(null)
         localStorage.clear()
@@ -104,7 +118,7 @@ const App = () => {
         {viewBlogForm && <AddBlogForm handleSubmit={handleCreateBlog} />}
         {viewBlogForm && <button onClick={() => setViewBlogForm(!viewBlogForm)}>cancel</button>}
         {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} handleLike={handleLike}/>
+            <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDelete={handleDelete}/>
         )}
     </div>
   )

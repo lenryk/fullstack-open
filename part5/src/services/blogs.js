@@ -18,4 +18,10 @@ async function updateBlog(objData) {
   return response.data
 }
 
-export {getAll, createBlog, updateBlog}
+async function deleteBlog(id) {
+  const user = JSON.parse(localStorage.getItem('user'))
+  const response = await axios.delete(`${baseUrl}/${id}`, {headers: { 'Authorization': `Bearer ${user.token}`}})
+  return response.data
+}
+
+export {getAll, createBlog, updateBlog, deleteBlog}
