@@ -14,9 +14,8 @@ function Blog({ blog, handleLike, handleDelete }) {
 
   return (
     <div style={blogStyle}>
-      {blog.title} <button onClick={() => setVisibility(!visibility)}>{visibility ? 'close' : 'view'}</button>
+      <span data-testid="titleAuthor">{blog.title} - by {blog.author} </span><button data-testid="viewToggle" onClick={() => setVisibility(!visibility)}>{visibility ? 'close' : 'view'}</button>
       {visibility && ( <ul>
-        <li>{blog.author}</li>
         <li>{blog.url}</li>
         <li>{blog.likes}  <button onClick={() => handleLike(blog)}>like</button></li>
         {blog.user.username === JSON.parse(localStorage.getItem('user')).username ? <button onClick={() => handleDelete(blog)}>delete blog</button> : null}
