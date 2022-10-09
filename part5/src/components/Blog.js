@@ -18,7 +18,7 @@ function Blog({blog, handleLike, handleDelete}) {
                 <li>{blog.author}</li>
                 <li>{blog.url}</li>
                 <li>{blog.likes}  <button onClick={() => handleLike(blog)}>like</button></li>
-                <button onClick={() => handleDelete(blog)}>delete blog</button>
+                {blog.user.username === JSON.parse(localStorage.getItem('user')).username ? <button onClick={() => handleDelete(blog)}>delete blog</button> : null}
               </ul>
           )}
       </div>

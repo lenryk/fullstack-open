@@ -77,20 +77,23 @@ const App = () => {
     }
 
     async function handleDelete(blogObj) {
-        try {
-            await deleteBlog(blogObj.id)
-            getBlogs()
-            setErrorMessage(`Deleted blog ${blogObj.title}`)
-            setTimeout(() => {
-                setErrorMessage(null)
-            }, 5000)
-        } catch(err) {
-            console.log(err)
-            setErrorMessage('Error deleting blog :(')
-            setTimeout(() => {
-                setErrorMessage(null)
-            }, 5000)
+        if (window.confirm(`Do you really want to delete ${blogObj.title} by ${blogObj.author}`)) {
+            try {
+                await deleteBlog(blogObj.id)
+                getBlogs()
+                setErrorMessage(`Deleted blog ${blogObj.title}`)
+                setTimeout(() => {
+                    setErrorMessage(null)
+                }, 5000)
+            } catch(err) {
+                console.log(err)
+                setErrorMessage('Error deleting blog :(')
+                setTimeout(() => {
+                    setErrorMessage(null)
+                }, 5000)
+            }
         }
+
     }
 
     function handleLogout() {
