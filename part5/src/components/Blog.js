@@ -6,9 +6,12 @@ function Blog({blog}) {
   return (
       <div>
         {blog.title} <button onClick={() => setVisibility(!visibility)}>{visibility ? 'close' : 'view'}</button>
-        <div>
-          {visibility && <span>{blog.author} {blog.url}</span>}
-        </div>
+          {visibility && ( <ul>
+                <li>{blog.author}</li>
+                <li>{blog.url}</li>
+                <li>{blog.likes}</li>
+              </ul>
+          )}
       </div>
       )
 
