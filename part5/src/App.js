@@ -16,12 +16,13 @@ const App = () => {
 
     const [viewBlogForm, setViewBlogForm] = useState(false)
 
-  useEffect(() => {
-      async function getBlogs() {
-          const blogData = await getAll()
-          setBlogs(blogData)
-      }
+    async function getBlogs() {
+        const blogData = await getAll()
+        const sortedByLikes = blogData.sort((a,b) => b.likes - a.likes)
+        setBlogs(sortedByLikes)
+    }
 
+  useEffect(() => {
       if(user) {
          getBlogs()
           localStorage.setItem('user', JSON.stringify(user))
@@ -47,8 +48,7 @@ const App = () => {
     async function handleCreateBlog(newBlogObj) {
         try {
             await createBlog(newBlogObj)
-            const blogData = await getAll()
-            setBlogs(blogData)
+            getBlogs()
             setErrorMessage('Added blog successfully!')
             setTimeout(() => {
                 setErrorMessage(null)
@@ -65,9 +65,8 @@ const App = () => {
     async function handleLike(blogObj) {
         try {
             await updateBlog({...blogObj, likes: blogObj.likes + 1, user: blogObj.user.id})
-            const blogData = await getAll()
-            setBlogs(blogData)
-            setErrorMessage(`Added like to ${blogObj.blog.title}`)
+            getBlogs()
+            setErrorMessage(`Added like to ${blogObj.title}`)
             setTimeout(() => {
                 setErrorMessage(null)
             }, 5000)
