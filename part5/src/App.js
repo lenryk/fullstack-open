@@ -54,6 +54,10 @@ const App = () => {
             setTitle('')
             setAuthor('')
             setUrl('')
+            setErrorMessage('Added blog successfully!')
+            setTimeout(() => {
+                setErrorMessage(null)
+            }, 5000)
         } catch {
             setErrorMessage('Error adding new blog')
             setTimeout(() => {
@@ -81,6 +85,8 @@ const App = () => {
     <div>
         <h2>blogs</h2>
         <span>Logged in as {user.name}   </span><button onClick={handleLogout}>Logout</button>
+        <h2>create new blog</h2>
+        {errorMessage && <h2 style={{color:'green'}}>{errorMessage}</h2>}
         <AddBlogForm title={title} author={author} url={url} handleSubmit={handleCreateBlog} setTitle={setTitle} setAuthor={setAuthor} setUrl={setUrl}/>
         {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />

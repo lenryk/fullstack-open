@@ -2,7 +2,6 @@ export default function LoginForm({title, author, url, setTitle, setAuthor, setU
 
     return (
         <>
-            <h1>create new blog</h1>
             <form onSubmit={handleSubmit}>
                 <span>title:</span><input value={title} onChange={(event) => setTitle(event.target.value)}/>
                 <br/>
