@@ -1,9 +1,19 @@
-export default function LoginForm({title, author, url, setTitle, setAuthor, setUrl, handleSubmit}) {
+import {useState} from 'react';
+
+export default function LoginForm({handleSubmit}) {
+    const [title, setTitle] = useState('')
+    const [author, setAuthor] = useState('')
+    const [url, setUrl] = useState('')
+
+    function addBlog(event) {
+        event.preventDefault()
+        handleSubmit({title, author, url})
+    }
 
     return (
         <>
             <h2>create new blog</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={addBlog}>
                 <span>title:</span><input value={title} onChange={(event) => setTitle(event.target.value)}/>
                 <br/>
                 <span>author:</span><input value={author} onChange={(event) => setAuthor(event.target.value)}/>

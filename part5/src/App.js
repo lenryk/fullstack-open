@@ -12,9 +12,7 @@ const App = () => {
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState(null)
 
-    const [title, setTitle] = useState('')
-    const [author, setAuthor] = useState('')
-    const [url, setUrl] = useState('')
+
 
     const [viewBlogForm, setViewBlogForm] = useState(false)
 
@@ -46,16 +44,11 @@ const App = () => {
         }
     }
 
-    async function handleCreateBlog(event) {
-        event.preventDefault()
-
+    async function handleCreateBlog(newBlogObj) {
         try {
-            await createBlog({title,author,url})
+            await createBlog(newBlogObj)
             const blogData = await getAll()
             setBlogs(blogData)
-            setTitle('')
-            setAuthor('')
-            setUrl('')
             setErrorMessage('Added blog successfully!')
             setTimeout(() => {
                 setErrorMessage(null)
@@ -90,7 +83,7 @@ const App = () => {
         <br/>
         <button onClick={() => setViewBlogForm(!viewBlogForm)}>new note</button>
         {errorMessage && <h2 style={{color:'green'}}>{errorMessage}</h2>}
-        {viewBlogForm && <AddBlogForm title={title} author={author} url={url} handleSubmit={handleCreateBlog} setTitle={setTitle} setAuthor={setAuthor} setUrl={setUrl}/>}
+        {viewBlogForm && <AddBlogForm handleSubmit={handleCreateBlog} />}
         {viewBlogForm && <button onClick={() => setViewBlogForm(!viewBlogForm)}>cancel</button>}
         {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
