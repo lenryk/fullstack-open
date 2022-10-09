@@ -16,6 +16,8 @@ const App = () => {
     const [author, setAuthor] = useState('')
     const [url, setUrl] = useState('')
 
+    const [viewBlogForm, setViewBlogForm] = useState(false)
+
   useEffect(() => {
       async function getBlogs() {
           const blogData = await getAll()
@@ -85,9 +87,11 @@ const App = () => {
     <div>
         <h2>blogs</h2>
         <span>Logged in as {user.name}   </span><button onClick={handleLogout}>Logout</button>
-        <h2>create new blog</h2>
+        <br/>
+        <button onClick={() => setViewBlogForm(!viewBlogForm)}>new note</button>
         {errorMessage && <h2 style={{color:'green'}}>{errorMessage}</h2>}
-        <AddBlogForm title={title} author={author} url={url} handleSubmit={handleCreateBlog} setTitle={setTitle} setAuthor={setAuthor} setUrl={setUrl}/>
+        {viewBlogForm && <AddBlogForm title={title} author={author} url={url} handleSubmit={handleCreateBlog} setTitle={setTitle} setAuthor={setAuthor} setUrl={setUrl}/>}
+        {viewBlogForm && <button onClick={() => setViewBlogForm(!viewBlogForm)}>cancel</button>}
         {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
         )}
