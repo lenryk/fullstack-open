@@ -1,6 +1,7 @@
-import {useState} from 'react'
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 
-function Blog({blog, handleLike, handleDelete}) {
+function Blog({ blog, handleLike, handleDelete }) {
   const [visibility, setVisibility] = useState(false)
 
   const blogStyle = {
@@ -12,18 +13,24 @@ function Blog({blog, handleLike, handleDelete}) {
   }
 
   return (
-      <div style={blogStyle}>
-        {blog.title} <button onClick={() => setVisibility(!visibility)}>{visibility ? 'close' : 'view'}</button>
-          {visibility && ( <ul>
-                <li>{blog.author}</li>
-                <li>{blog.url}</li>
-                <li>{blog.likes}  <button onClick={() => handleLike(blog)}>like</button></li>
-                {blog.user.username === JSON.parse(localStorage.getItem('user')).username ? <button onClick={() => handleDelete(blog)}>delete blog</button> : null}
-              </ul>
-          )}
-      </div>
-      )
+    <div style={blogStyle}>
+      {blog.title} <button onClick={() => setVisibility(!visibility)}>{visibility ? 'close' : 'view'}</button>
+      {visibility && ( <ul>
+        <li>{blog.author}</li>
+        <li>{blog.url}</li>
+        <li>{blog.likes}  <button onClick={() => handleLike(blog)}>like</button></li>
+        {blog.user.username === JSON.parse(localStorage.getItem('user')).username ? <button onClick={() => handleDelete(blog)}>delete blog</button> : null}
+      </ul>
+      )}
+    </div>
+  )
 
 }
 
 export default Blog
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired
+}

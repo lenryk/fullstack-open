@@ -8,20 +8,20 @@ async function getAll() {
 
 async function createBlog(objData) {
   const user = JSON.parse(localStorage.getItem('user'))
-  const response = await axios.post(baseUrl, objData, {headers: { 'Authorization': `Bearer ${user.token}`}})
+  const response = await axios.post(baseUrl, objData, { headers: { 'Authorization': `Bearer ${user.token}` } })
   return response.data
 }
 
 async function updateBlog(objData) {
   const user = JSON.parse(localStorage.getItem('user'))
-  const response = await axios.put(`${baseUrl}/${objData.id}`, objData, {headers: { 'Authorization': `Bearer ${user.token}`}})
+  const response = await axios.put(`${baseUrl}/${objData.id}`, objData, { headers: { 'Authorization': `Bearer ${user.token}` } })
   return response.data
 }
 
 async function deleteBlog(id) {
   const user = JSON.parse(localStorage.getItem('user'))
-  const response = await axios.delete(`${baseUrl}/${id}`, {headers: { 'Authorization': `Bearer ${user.token}`}})
+  const response = await axios.delete(`${baseUrl}/${id}`, { headers: { 'Authorization': `Bearer ${user.token}` } })
   return response.data
 }
 
-export {getAll, createBlog, updateBlog, deleteBlog}
+export { getAll, createBlog, updateBlog, deleteBlog }
