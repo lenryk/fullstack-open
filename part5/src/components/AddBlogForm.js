@@ -8,6 +8,9 @@ export default function LoginForm({handleSubmit}) {
     function addBlog(event) {
         event.preventDefault()
         handleSubmit({title, author, url})
+        setTitle('')
+        setAuthor('')
+        setUrl('')
     }
 
     return (

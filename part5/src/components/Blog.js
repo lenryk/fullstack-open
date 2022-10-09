@@ -1,6 +1,6 @@
 import {useState} from 'react'
 
-function Blog({blog}) {
+function Blog({blog, handleLike}) {
   const [visibility, setVisibility] = useState(false)
 
   const blogStyle = {
@@ -17,7 +17,7 @@ function Blog({blog}) {
           {visibility && ( <ul>
                 <li>{blog.author}</li>
                 <li>{blog.url}</li>
-                <li>{blog.likes}</li>
+                <li>{blog.likes}</li><button onClick={() => handleLike(blog)}>like</button>
               </ul>
           )}
       </div>

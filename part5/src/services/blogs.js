@@ -12,4 +12,10 @@ async function createBlog(objData) {
   return response.data
 }
 
-export {getAll, createBlog}
+async function updateBlog(objData) {
+  const user = JSON.parse(localStorage.getItem('user'))
+  const response = await axios.put(`${baseUrl}/${objData.id}`, objData, {headers: { 'Authorization': `Bearer ${user.token}`}})
+  return response.data
+}
+
+export {getAll, createBlog, updateBlog}
