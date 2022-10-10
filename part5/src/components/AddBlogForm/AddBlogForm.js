@@ -17,11 +17,11 @@ export default function LoginForm({ handleSubmit }) {
     <>
       <h2>create new blog</h2>
       <form onSubmit={addBlog}>
-        <span>title:</span><input value={title} onChange={(event) => setTitle(event.target.value)}/>
+        <span>title:</span><input data-testid="title" value={title} onChange={(event) => setTitle(event.target.value)}/>
         <br/>
-        <span>author:</span><input value={author} onChange={(event) => setAuthor(event.target.value)}/>
+        <span>author:</span><input data-testid="author" value={author} onChange={(event) => setAuthor(event.target.value)}/>
         <br/>
-        <span>url:</span><input value={url} onChange={(event) => setUrl(event.target.value)}/>
+        <span>url:</span><input data-testid="url" value={url} onChange={(event) => setUrl(event.target.value)}/>
         <br/>
         <button type="submit">create</button>
       </form>
