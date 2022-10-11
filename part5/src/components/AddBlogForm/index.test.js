@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import AddNewBlog from './AddBlogForm'
+import AddNewBlog from 'part5/src/components/AddBlogForm/index'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
