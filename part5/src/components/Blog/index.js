@@ -13,11 +13,11 @@ function Blog({ blog, handleLike, handleDelete }) {
   }
 
   return (
-    <div style={blogStyle}>
+    <div data-testid="blog" style={blogStyle}>
       <span data-testid="titleAuthor">{blog.title} - by {blog.author} </span><button data-testid="viewToggle" onClick={() => setVisibility(!visibility)}>{visibility ? 'close' : 'view'}</button>
       {visibility && ( <ul>
-        <li>{blog.url}</li>
-        <li>{blog.likes}  <button data-testid="like" onClick={() => handleLike(blog)}>like</button></li>
+        <li>URL: <span>{blog.url}</span></li>
+        <li>Likes:<span data-testid="likes">{blog.likes}</span><button data-testid="like" onClick={() => handleLike(blog)}>like</button></li>
         {blog.user.username === JSON.parse(localStorage.getItem('user')).username ? <button data-testid="deleteBlog" onClick={() => handleDelete(blog)}>delete blog</button> : null}
       </ul>
       )}

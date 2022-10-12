@@ -120,9 +120,11 @@ const App = () => {
       {errorMessage && <h2 style={{ color:'green' }}>{errorMessage}</h2>}
       {viewBlogForm && <AddBlogForm handleSubmit={handleCreateBlog} />}
       {viewBlogForm && <button onClick={() => setViewBlogForm(!viewBlogForm)}>cancel</button>}
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDelete={handleDelete}/>
-      )}
+      <div data-testid="blogs">
+        {blogs.map(blog =>
+          <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDelete={handleDelete}/>
+        )}
+      </div>
     </div>
   )
 }

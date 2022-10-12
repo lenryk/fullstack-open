@@ -65,6 +65,38 @@ describe('Blog app', function() {
           cy.get('[data-testid="deleteBlog"]').click()
           cy.contains('Deleted blog my new blog post')
         })
+
+        it('Sorts blog posts by the most likes', function() {
+          cy.get('[data-testid="title"]').type('my second blog')
+          cy.get('[data-testid="author"]').type('mike2')
+          cy.get('[data-testid="url"]').type('google.com')
+
+          cy.get('[data-testid="submitBlog"]').click()
+
+          cy.contains('Added blog successfully!')
+
+          cy.get('[data-testid="viewToggle"]').click({ multiple: true })
+
+          // like first blog
+          cy.get('[data-testid="blogs"]').get('[data-testid="blog"]').first().get('[data-testid="likes"]').contains(0)
+          cy.get('[data-testid="like"]').first().click()
+          cy.wait(200)
+          cy.get('[data-testid="blogs"]').get('[data-testid="blog"]').first().get('[data-testid="likes"]').contains(1)
+
+          cy.get('[data-testid="viewToggle"]').last().click({ multiple: true })
+
+          // like second blog
+          cy.get('[data-testid="blogs"]').get('[data-testid="blog"]').last().get('[data-testid="likes"]').contains(0)
+          cy.get('[data-testid="like"]').last().click()
+          cy.wait(200)
+          cy.get('[data-testid="blogs"]').get('[data-testid="blog"]').last().get('[data-testid="likes"]').contains(1)
+
+          // like first blog
+          cy.get('[data-testid="blogs"]').get('[data-testid="blog"]').first().get('[data-testid="likes"]').contains(1)
+          cy.get('[data-testid="like"]').first().click()
+          cy.wait(200)
+          cy.get('[data-testid="blogs"]').get('[data-testid="blog"]').first().get('[data-testid="likes"]').contains(2)
+        })
       })
     })
   })
