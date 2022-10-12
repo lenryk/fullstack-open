@@ -58,6 +58,13 @@ describe('Blog app', function() {
           cy.get('[data-testid="like"]').click()
           cy.contains('1')
         })
+
+        it('A blog by the same user can be deleted', function () {
+          cy.get('[data-testid="viewToggle"]').click()
+          cy.contains('delete blog')
+          cy.get('[data-testid="deleteBlog"]').click()
+          cy.contains('Deleted blog my new blog post')
+        })
       })
     })
   })

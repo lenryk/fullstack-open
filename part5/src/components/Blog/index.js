@@ -18,7 +18,7 @@ function Blog({ blog, handleLike, handleDelete }) {
       {visibility && ( <ul>
         <li>{blog.url}</li>
         <li>{blog.likes}  <button data-testid="like" onClick={() => handleLike(blog)}>like</button></li>
-        {blog.user.username === JSON.parse(localStorage.getItem('user')).username ? <button onClick={() => handleDelete(blog)}>delete blog</button> : null}
+        {blog.user.username === JSON.parse(localStorage.getItem('user')).username ? <button data-testid="deleteBlog" onClick={() => handleDelete(blog)}>delete blog</button> : null}
       </ul>
       )}
     </div>
