@@ -42,6 +42,22 @@ describe('Blog app', function() {
         cy.get('[data-testid="submitBlog"]').click()
 
         cy.contains('Added blog successfully!')
+
+
+      })
+
+      describe('Interacting with blog posts', function() {
+        beforeEach(function() {
+          cy.createBlog('my new blog post', 'charles', 'facebook.com')
+        })
+
+
+        it('A blog can be liked', function () {
+          cy.get('[data-testid="viewToggle"]').click()
+          cy.contains('0')
+          cy.get('[data-testid="like"]').click()
+          cy.contains('1')
+        })
       })
     })
   })

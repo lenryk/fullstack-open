@@ -31,3 +31,15 @@ Cypress.Commands.add('login', (username, password) => {
   cy.get('[data-testid="login"]').click()
 
 })
+
+Cypress.Commands.add('createBlog', (title, author, url) => {
+  cy.get('[data-testid="createNote"]').click()
+
+  cy.get('[data-testid="title"]').type(title)
+  cy.get('[data-testid="author"]').type(author)
+  cy.get('[data-testid="url"]').type(url)
+
+  cy.get('[data-testid="submitBlog"]').click()
+
+  cy.contains('Added blog successfully!')
+})
