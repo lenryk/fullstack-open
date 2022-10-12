@@ -116,7 +116,7 @@ const App = () => {
       <h2>blogs</h2>
       <span>Logged in as {user.name}   </span><button onClick={handleLogout}>Logout</button>
       <br/>
-      <button onClick={() => setViewBlogForm(!viewBlogForm)}>create note</button>
+      <button data-testid="createNote" onClick={() => setViewBlogForm(!viewBlogForm)}>create note</button>
       {errorMessage && <h2 style={{ color:'green' }}>{errorMessage}</h2>}
       {viewBlogForm && <AddBlogForm handleSubmit={handleCreateBlog} />}
       {viewBlogForm && <button onClick={() => setViewBlogForm(!viewBlogForm)}>cancel</button>}

@@ -23,7 +23,7 @@ export default function LoginForm({ handleSubmit }) {
         <br/>
         <span>url:</span><input data-testid="url" value={url} onChange={(event) => setUrl(event.target.value)}/>
         <br/>
-        <button type="submit">create</button>
+        <button data-testid="submitBlog" type="submit">create</button>
       </form>
     </>
   )

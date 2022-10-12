@@ -26,5 +26,23 @@ describe('Blog app', function() {
 
       cy.get('h2').should('have.attr', 'style', 'color: red;')
     })
+
+    describe('When logged in', function() {
+      beforeEach(function() {
+        cy.login('mike2', 'testing')
+      })
+
+      it('A blog can be created', function() {
+        cy.get('[data-testid="createNote"]').click()
+
+        cy.get('[data-testid="title"]').type('my test blog post')
+        cy.get('[data-testid="author"]').type('mike')
+        cy.get('[data-testid="url"]').type('google.com')
+
+        cy.get('[data-testid="submitBlog"]').click()
+
+        cy.contains('Added blog successfully!')
+      })
+    })
   })
 })
