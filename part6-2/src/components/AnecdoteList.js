@@ -1,9 +1,9 @@
 import { useSelector, useDispatch} from 'react-redux'
 import {incrementVote} from '../reducers/anecdoteReducer'
 
-export default function AncedoteList() {
+export default function AnecdoteList() {
   const dispatch = useDispatch()
-  const anecdotes = useSelector(state => state)
+  const anecdotes = useSelector(state => state.anecdotes)
 
   const vote = (id) => {
     dispatch(incrementVote(id))
