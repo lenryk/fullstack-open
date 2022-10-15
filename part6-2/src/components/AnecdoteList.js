@@ -11,7 +11,7 @@ export default function AncedoteList() {
 
   return (
      <>
-       {anecdotes.sort((a,b) => b.votes - a.votes).map(anecdote =>
+       {anecdotes.map(a => a).sort((a,b) => b.votes - a.votes).map(anecdote =>
          <div key={anecdote.id}>
            <div>
              {anecdote.content}

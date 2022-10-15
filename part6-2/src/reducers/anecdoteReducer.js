@@ -1,3 +1,5 @@
+import { createSlice } from '@reduxjs/toolkit'
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -19,48 +21,31 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
-
-  switch(action.type) {
-    case 'INCREMENT_VOTE':
-      // get ID sent from the action function below
-      const id = action.data.id
+const anecdotesSlice = createSlice({
+  name: 'anecdotes',
+  initialState,
+  reducers: {
+    incrementVote(state, action) {
       // search array of objects to find object that matches passed in id param from function below
-      const itemChange = state.find(item => item.id === id)
+      const itemToChange = state.find(a => a.id === action.payload)
       // create a new object with the old state and overwrite the votes with a +1
       const changedItem = {
-        ...itemChange,
-        votes: itemChange.votes + 1
+       ...itemToChange,
+        votes: itemToChange.votes + 1
       }
       // return a new array with all the old objects. if the id of the object matches the one passed in
       // then return the new changedItem instead of the existing one
-      return state.map(item => item.id !== id ? item : changedItem)
-    case 'ADD_NEW':
-      const newItem = {
-        content: action.data,
+      return state.map(item => item.id !== action.payload ? item : changedItem)
+    },
+    addNewAnecdote(state, action) {
+      state.push({
+        content: action.payload,
         id: getId(),
         votes: 0
-      }
-      return [...state, newItem]
-    default:
-      return state
-  }
-}
+      })
+    }
+  },
+})
 
-export function incrementVote(id) {
-  return {
-    type: 'INCREMENT_VOTE',
-    data: {id}
-  }
-}
-
-export function addNewAnecdote(data) {
-  return {
-    type: 'ADD_NEW',
-    data,
-  }
-}
-
-export default reducer
+export const {incrementVote, addNewAnecdote } = anecdotesSlice.actions
+export default anecdotesSlice.reducer
