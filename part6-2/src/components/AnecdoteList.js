@@ -13,10 +13,7 @@ export default function AnecdoteList() {
 
   const vote = (anecdote) => {
     dispatch(addVote(anecdote))
-    dispatch(setNotification(`added a vote!`))
-    setTimeout(() => {
-      dispatch(setNotification(null))
-    }, 5000)
+    dispatch(setNotification(`you voted '${anecdote.content}'`, 10))
   }
 
   return (
