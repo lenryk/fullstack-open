@@ -8,11 +8,8 @@ export default function AnecdoteForm() {
   const addNew = async (event) => {
     event.preventDefault()
     const content = event.target.title.value
-    dispatch(setNotification(`added ${content} anecdote`))
     dispatch(addNewAnecdote(content))
-    setTimeout(() => {
-      dispatch(setNotification(null))
-    }, 5000)
+    dispatch(setNotification(`added '${content}' anecdote`, 10))
   }
 
   return (
