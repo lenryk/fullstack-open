@@ -14,7 +14,7 @@ const Notification = ({notification}) => {
 }
 
 const mapStateToProps = (state) => {
-  return { notification: state.notifications }
+  return { notification: state.notifications.message }
 }
 
 const ConnectedNotification = connect(mapStateToProps)(Notification)
