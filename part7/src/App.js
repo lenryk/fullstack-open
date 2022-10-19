@@ -67,9 +67,9 @@ const CreateNew = (props) => {
   }
 
   const handleClear = () => {
-    content.clear()
-    author.clear()
-    info.clear()
+    content.onReset()
+    author.onReset()
+    info.onReset()
   }
 
   return (
