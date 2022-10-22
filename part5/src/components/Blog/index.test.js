@@ -11,8 +11,8 @@ test('renders blog title and author', () => {
     url: 'google.com',
     likes: 50,
     user: {
-      username: 'mike'
-    }
+      username: 'mike',
+    },
   }
 
   render(<Blog blog={blogData} handleLike={() => {}} handleDelete={() => {}} />)
@@ -28,8 +28,8 @@ test('view more button shows likes and url', async () => {
     url: 'google.com',
     likes: 50,
     user: {
-      username: 'mike'
-    }
+      username: 'mike',
+    },
   }
 
   localStorage.setItem('user', '{"user": "mike"}')
@@ -50,14 +50,16 @@ test('like button triggers handlelike function', async () => {
     url: 'google.com',
     likes: 50,
     user: {
-      username: 'mike'
-    }
+      username: 'mike',
+    },
   }
 
   localStorage.setItem('user', '{"user": "mike"}')
 
   const handleLike = jest.fn()
-  render(<Blog blog={blogData} handleLike={handleLike} handleDelete={() => {}} />)
+  render(
+    <Blog blog={blogData} handleLike={handleLike} handleDelete={() => {}} />
+  )
 
   const user = userEvent.setup()
   await user.click(screen.getByTestId('viewToggle'))

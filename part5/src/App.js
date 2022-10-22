@@ -6,7 +6,11 @@ import loginService from './services/login'
 import AddBlogForm from './components/AddBlogForm'
 
 const App = () => {
-  const [user, setUser] = useState(() => localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null)
+  const [user, setUser] = useState(() =>
+    localStorage.getItem('user')
+      ? JSON.parse(localStorage.getItem('user'))
+      : null
+  )
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -15,12 +19,12 @@ const App = () => {
 
   async function getBlogs() {
     const blogData = await getAll()
-    const sortedByLikes = blogData.sort((a,b) => b.likes - a.likes)
+    const sortedByLikes = blogData.sort((a, b) => b.likes - a.likes)
     setBlogs(sortedByLikes)
   }
 
   useEffect(() => {
-    if(user) {
+    if (user) {
       getBlogs()
       localStorage.setItem('user', JSON.stringify(user))
     }
@@ -30,11 +34,11 @@ const App = () => {
     event.preventDefault()
 
     try {
-      const user = await loginService({ username,password })
+      const user = await loginService({ username, password })
       setUser(user)
       setUsername('')
       setPassword('')
-    } catch(err) {
+    } catch (err) {
       setErrorMessage('Invalid login')
       setTimeout(() => {
         setErrorMessage(null)
@@ -50,7 +54,7 @@ const App = () => {
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
-    } catch(err) {
+    } catch (err) {
       console.log(err)
       setErrorMessage('Error adding new blog')
       setTimeout(() => {
@@ -61,13 +65,17 @@ const App = () => {
 
   async function handleLike(blogObj) {
     try {
-      await updateBlog({ ...blogObj, likes: blogObj.likes + 1, user: blogObj.user.id })
+      await updateBlog({
+        ...blogObj,
+        likes: blogObj.likes + 1,
+        user: blogObj.user.id,
+      })
       await getBlogs()
       setErrorMessage(`Added like to ${blogObj.title}`)
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
-    } catch(err) {
+    } catch (err) {
       console.log(err)
       setErrorMessage('Error adding likes')
       setTimeout(() => {
@@ -77,7 +85,11 @@ const App = () => {
   }
 
   async function handleDelete(blogObj) {
-    if (window.confirm(`Do you really want to delete ${blogObj.title} by ${blogObj.author}`)) {
+    if (
+      window.confirm(
+        `Do you really want to delete ${blogObj.title} by ${blogObj.author}`
+      )
+    ) {
       try {
         await deleteBlog(blogObj.id)
         await getBlogs()
@@ -85,7 +97,7 @@ const App = () => {
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
-      } catch(err) {
+      } catch (err) {
         console.log(err)
         setErrorMessage('Error deleting blog :(')
         setTimeout(() => {
@@ -93,7 +105,6 @@ const App = () => {
         }, 5000)
       }
     }
-
   }
 
   function handleLogout() {
@@ -104,9 +115,14 @@ const App = () => {
   if (!user) {
     return (
       <div>
-        <LoginForm username={username} password={password} setUsername={setUsername} setPassword={setPassword} handleSubmit={handleSubmit}/>
-        {errorMessage && <h2 style={{ color:'red' }}>{errorMessage}</h2>}
-
+        <LoginForm
+          username={username}
+          password={password}
+          setUsername={setUsername}
+          setPassword={setPassword}
+          handleSubmit={handleSubmit}
+        />
+        {errorMessage && <h2 style={{ color: 'red' }}>{errorMessage}</h2>}
       </div>
     )
   }
@@ -114,16 +130,29 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <span>Logged in as {user.name}   </span><button onClick={handleLogout}>Logout</button>
-      <br/>
-      <button data-testid="createNote" onClick={() => setViewBlogForm(!viewBlogForm)}>create note</button>
-      {errorMessage && <h2 style={{ color:'green' }}>{errorMessage}</h2>}
+      <span>Logged in as {user.name} </span>
+      <button onClick={handleLogout}>Logout</button>
+      <br />
+      <button
+        data-testid="createNote"
+        onClick={() => setViewBlogForm(!viewBlogForm)}
+      >
+        create note
+      </button>
+      {errorMessage && <h2 style={{ color: 'green' }}>{errorMessage}</h2>}
       {viewBlogForm && <AddBlogForm handleSubmit={handleCreateBlog} />}
-      {viewBlogForm && <button onClick={() => setViewBlogForm(!viewBlogForm)}>cancel</button>}
+      {viewBlogForm && (
+        <button onClick={() => setViewBlogForm(!viewBlogForm)}>cancel</button>
+      )}
       <div data-testid="blogs">
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDelete={handleDelete}/>
-        )}
+        {blogs.map((blog) => (
+          <Blog
+            key={blog.id}
+            blog={blog}
+            handleLike={handleLike}
+            handleDelete={handleDelete}
+          />
+        ))}
       </div>
     </div>
   )
