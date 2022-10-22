@@ -36,6 +36,7 @@ function Blog({ blog, handleLike, handleDelete }) {
           </li>
           {blog.user.username ===
           JSON.parse(localStorage.getItem('user')).username ? (
+            /* eslint-disable indent */
             <button data-testid="deleteBlog" onClick={() => handleDelete(blog)}>
               delete blog
             </button>
