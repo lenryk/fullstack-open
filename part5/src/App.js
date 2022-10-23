@@ -6,6 +6,8 @@ import loginService from './services/login'
 import AddBlogForm from './components/AddBlogForm'
 import { useDispatch, useSelector } from 'react-redux'
 import { createNotification } from './reducers/notificationReducer'
+import { Routes, Route, BrowserRouter as Router } from 'react-router-dom'
+import Users from './components/Users'
 
 const App = () => {
   const [user, setUser] = useState(() =>
@@ -111,6 +113,31 @@ const App = () => {
     }
   }
 
+  function Blogs({ data: blogs }) {
+    return (
+      <>
+        {viewBlogForm ? null : (
+          <button
+            data-testid="createNote"
+            onClick={() => setViewBlogForm(!viewBlogForm)}
+          >
+            create note
+          </button>
+        )}
+        <div data-testid="blogs">
+          {blogs.map((blog) => (
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleLike={handleLike}
+              handleDelete={handleDelete}
+            />
+          ))}
+        </div>
+      </>
+    )
+  }
+
   function handleLogout() {
     setUser(null)
     localStorage.clear()
@@ -133,31 +160,21 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
-      <span>Logged in as {user.name} </span>
-      <button onClick={handleLogout}>Logout</button>
-      <br />
-      <button
-        data-testid="createNote"
-        onClick={() => setViewBlogForm(!viewBlogForm)}
-      >
-        create note
-      </button>
-      {notification && <h2 style={{ color: 'green' }}>{notification}</h2>}
-      {viewBlogForm && <AddBlogForm handleSubmit={handleCreateBlog} />}
-      {viewBlogForm && (
-        <button onClick={() => setViewBlogForm(!viewBlogForm)}>cancel</button>
-      )}
-      <div data-testid="blogs">
-        {blogs.map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            handleLike={handleLike}
-            handleDelete={handleDelete}
-          />
-        ))}
-      </div>
+      <Router>
+        <h2>blogs</h2>
+        <span>Logged in as {user.name} </span>
+        <button onClick={handleLogout}>Logout</button>
+        <br />
+        {notification && <h2 style={{ color: 'green' }}>{notification}</h2>}
+        {viewBlogForm && <AddBlogForm handleSubmit={handleCreateBlog} />}
+        {viewBlogForm && (
+          <button onClick={() => setViewBlogForm(!viewBlogForm)}>cancel</button>
+        )}
+        <Routes>
+          <Route path="/" element={<Blogs data={blogs} />} />
+          <Route path="/users" element={<Users data={blogs} />} />
+        </Routes>
+      </Router>
     </div>
   )
 }
