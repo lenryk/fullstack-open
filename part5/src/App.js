@@ -9,6 +9,7 @@ import { createNotification } from './reducers/notificationReducer'
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom'
 import Users from './components/Users'
 import IndividualBlog from './components/IndividualBlog'
+import Nav from './components/Nav'
 
 const App = () => {
   const [user, setUser] = useState(() =>
@@ -162,9 +163,9 @@ const App = () => {
   return (
     <div>
       <Router>
+        <Nav user={user.name} handleLogout={handleLogout} />
         <h2>blogs</h2>
         <span>Logged in as {user.name} </span>
-        <button onClick={handleLogout}>Logout</button>
         <br />
         {notification && <h2 style={{ color: 'green' }}>{notification}</h2>}
         {viewBlogForm && <AddBlogForm handleSubmit={handleCreateBlog} />}
