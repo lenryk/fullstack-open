@@ -4,6 +4,8 @@ import LoginForm from './components/LoginForm'
 import { getAll, createBlog, updateBlog, deleteBlog } from './services/blogs'
 import loginService from './services/login'
 import AddBlogForm from './components/AddBlogForm'
+import { useDispatch, useSelector } from 'react-redux'
+import { createNotification } from './reducers/notificationReducer'
 
 const App = () => {
   const [user, setUser] = useState(() =>
@@ -14,8 +16,10 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState(null)
   const [viewBlogForm, setViewBlogForm] = useState(false)
+
+  const dispatch = useDispatch()
+  const notification = useSelector(({ notifications }) => notifications)
 
   async function getBlogs() {
     const blogData = await getAll()
@@ -39,9 +43,9 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (err) {
-      setErrorMessage('Invalid login')
+      dispatch(createNotification('Invalid login'))
       setTimeout(() => {
-        setErrorMessage(null)
+        dispatch(createNotification(null))
       }, 5000)
     }
   }
@@ -50,15 +54,15 @@ const App = () => {
     try {
       await createBlog(newBlogObj)
       await getBlogs()
-      setErrorMessage('Added blog successfully!')
+      dispatch(createNotification('Added blog successfully'))
       setTimeout(() => {
-        setErrorMessage(null)
+        dispatch(createNotification(null))
       }, 5000)
     } catch (err) {
       console.log(err)
-      setErrorMessage('Error adding new blog')
+      dispatch(createNotification('Error adding new blog'))
       setTimeout(() => {
-        setErrorMessage(null)
+        dispatch(createNotification(null))
       }, 5000)
     }
   }
@@ -71,15 +75,15 @@ const App = () => {
         user: blogObj.user.id,
       })
       await getBlogs()
-      setErrorMessage(`Added like to ${blogObj.title}`)
+      dispatch(createNotification(`Added like to ${blogObj.title}`))
       setTimeout(() => {
-        setErrorMessage(null)
+        dispatch(createNotification(null))
       }, 5000)
     } catch (err) {
       console.log(err)
-      setErrorMessage('Error adding likes')
+      dispatch(createNotification('Error adding likes'))
       setTimeout(() => {
-        setErrorMessage(null)
+        dispatch(createNotification(null))
       }, 5000)
     }
   }
@@ -93,15 +97,15 @@ const App = () => {
       try {
         await deleteBlog(blogObj.id)
         await getBlogs()
-        setErrorMessage(`Deleted blog ${blogObj.title}`)
+        dispatch(createNotification(`Deleted blog ${blogObj.title}`))
         setTimeout(() => {
-          setErrorMessage(null)
+          dispatch(createNotification(null))
         }, 5000)
       } catch (err) {
         console.log(err)
-        setErrorMessage('Error deleting blog :(')
+        dispatch(createNotification('Error deleting blog :('))
         setTimeout(() => {
-          setErrorMessage(null)
+          dispatch(createNotification(null))
         }, 5000)
       }
     }
@@ -122,7 +126,7 @@ const App = () => {
           setPassword={setPassword}
           handleSubmit={handleSubmit}
         />
-        {errorMessage && <h2 style={{ color: 'red' }}>{errorMessage}</h2>}
+        {notification && <h2 style={{ color: 'red' }}>{notification}</h2>}
       </div>
     )
   }
@@ -139,7 +143,7 @@ const App = () => {
       >
         create note
       </button>
-      {errorMessage && <h2 style={{ color: 'green' }}>{errorMessage}</h2>}
+      {notification && <h2 style={{ color: 'green' }}>{notification}</h2>}
       {viewBlogForm && <AddBlogForm handleSubmit={handleCreateBlog} />}
       {viewBlogForm && (
         <button onClick={() => setViewBlogForm(!viewBlogForm)}>cancel</button>
