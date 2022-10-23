@@ -1,9 +1,7 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
-function Blog({ blog, handleLike, handleDelete }) {
-  const [visibility, setVisibility] = useState(false)
-
+function Blog({ blog }) {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -15,34 +13,10 @@ function Blog({ blog, handleLike, handleDelete }) {
   return (
     <div data-testid="blog" style={blogStyle}>
       <span data-testid="titleAuthor">
-        {blog.title} - by {blog.author}{' '}
+        <Link to={`/blogs/${blog.id}`}>
+          {blog.title} - by {blog.author}{' '}
+        </Link>
       </span>
-      <button
-        data-testid="viewToggle"
-        onClick={() => setVisibility(!visibility)}
-      >
-        {visibility ? 'close' : 'view'}
-      </button>
-      {visibility && (
-        <ul>
-          <li>
-            URL: <span>{blog.url}</span>
-          </li>
-          <li>
-            Likes:<span data-testid="likes">{blog.likes}</span>
-            <button data-testid="like" onClick={() => handleLike(blog)}>
-              like
-            </button>
-          </li>
-          {blog.user.username ===
-          JSON.parse(localStorage.getItem('user')).username ? (
-            /* eslint-disable indent */
-            <button data-testid="deleteBlog" onClick={() => handleDelete(blog)}>
-              delete blog
-            </button>
-          ) : null}
-        </ul>
-      )}
     </div>
   )
 }

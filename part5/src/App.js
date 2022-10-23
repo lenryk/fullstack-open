@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createNotification } from './reducers/notificationReducer'
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom'
 import Users from './components/Users'
+import IndividualBlog from './components/IndividualBlog'
 
 const App = () => {
   const [user, setUser] = useState(() =>
@@ -174,6 +175,10 @@ const App = () => {
           <Route path="/" element={<Blogs data={blogs} />} />
           <Route path="/users" element={<Users data={blogs} />} />
           <Route path="/users/:author" element={<Users data={blogs} />} />
+          <Route
+            path="/blogs/:id"
+            element={<IndividualBlog data={blogs} handleLike={handleLike} />}
+          />
         </Routes>
       </Router>
     </div>

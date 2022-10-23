@@ -7,6 +7,8 @@ export default function Users({ data: users }) {
     totals.push(blog.author)
   })
 
+  console.log(users)
+
   const totalObject = totals.reduce((prev, curr, index) => {
     return Object.assign(prev, {
       [curr]: totals.filter((blog) => blog === totals[index]).length,
