@@ -1,4 +1,7 @@
+import { useParams, Link } from 'react-router-dom'
+
 export default function Users({ data: users }) {
+  const { author } = useParams()
   const totals = []
   users.forEach((blog) => {
     totals.push(blog.author)
@@ -10,12 +13,34 @@ export default function Users({ data: users }) {
     })
   }, {})
 
+  if (author) {
+    let filteredBlogs
+    try {
+      filteredBlogs = users.filter((blog) => blog.author === author)
+    } catch {
+      filteredBlogs = []
+    }
+
+    return (
+      <>
+        <h2>Blogs for author {author}</h2>
+        <ul>
+          {filteredBlogs.map((blog) => (
+            <li key={blog.id}>{blog.title}</li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+
   return (
     <ul>
       {Object.keys(totalObject).map((key) => {
         return (
           <li key={key}>
-            {key} - {totalObject[key]}
+            <Link to={`/users/${key}`}>
+              {key} - {totalObject[key]}
+            </Link>
           </li>
         )
       })}
