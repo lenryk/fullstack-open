@@ -6,6 +6,10 @@ export default function IndividualBlog({ data, handleLike }) {
 
   console.log(singleBlog)
 
+  if (!data) {
+    return null
+  }
+
   return (
     <>
       <h2>
@@ -19,6 +23,12 @@ export default function IndividualBlog({ data, handleLike }) {
         <button onClick={() => handleLike(singleBlog[0])}>like</button>
       </span>
       <p>Added by {singleBlog[0].user.username}</p>
+      <h2>comments</h2>
+      <ul>
+        {singleBlog[0].comments.map((comment) => (
+          <li key={comment}>{comment}</li>
+        ))}
+      </ul>
     </>
   )
 }
