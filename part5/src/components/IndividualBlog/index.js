@@ -1,13 +1,23 @@
 import { useParams } from 'react-router-dom'
+import { useState } from 'react'
+import AddComment from '../AddComment'
+import { addBlogComment } from '../../services/blogs'
 
 export default function IndividualBlog({ data, handleLike }) {
+  const [comment, setComment] = useState('')
+
   const { id } = useParams()
   const singleBlog = data.filter((blog) => blog.id === String(id))
 
-  console.log(singleBlog)
-
   if (!data) {
     return null
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault()
+    await addBlogComment(id, { comment: comment })
+    alert('comment added')
+    setComment('')
   }
 
   return (
@@ -24,6 +34,11 @@ export default function IndividualBlog({ data, handleLike }) {
       </span>
       <p>Added by {singleBlog[0].user.username}</p>
       <h2>comments</h2>
+      <AddComment
+        onSubmit={handleSubmit}
+        setComment={setComment}
+        comment={comment}
+      />
       <ul>
         {singleBlog[0].comments.map((comment) => (
           <li key={comment}>{comment}</li>

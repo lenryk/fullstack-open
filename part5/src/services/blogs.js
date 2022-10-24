@@ -30,4 +30,12 @@ async function deleteBlog(id) {
   return response.data
 }
 
-export { getAll, createBlog, updateBlog, deleteBlog }
+async function addBlogComment(id, ObjData) {
+  const user = JSON.parse(localStorage.getItem('user'))
+  const response = await axios.post(`${baseUrl}/${id}/comments`, ObjData, {
+    headers: { Authorization: `Bearer ${user.token}` },
+  })
+  return response.data
+}
+
+export { getAll, createBlog, updateBlog, deleteBlog, addBlogComment }
