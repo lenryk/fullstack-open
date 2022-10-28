@@ -156,7 +156,7 @@ const resolvers = {
     name: (root) => root,
     bookCount: (root) => books.filter((book) => book.author === root).length,
     born: (root) =>
-      authors.filter((author) => author.name === root)[0].born || 0,
+      authors.filter((author) => author.name === root)[0]?.born || 0,
   },
   Genre: {
     title: (root) => root.title,
