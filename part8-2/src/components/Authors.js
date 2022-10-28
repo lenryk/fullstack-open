@@ -4,8 +4,6 @@ import { ALL_AUTHORS } from "../queries";
 const Authors = (props) => {
   const authors = useQuery(ALL_AUTHORS) || [];
 
-  console.log(authors);
-
   if (!props.show) {
     return null;
   }
@@ -24,7 +22,7 @@ const Authors = (props) => {
             {authors.data.allAuthors.map((a) => (
               <tr key={a.name}>
                 <td>{a.name}</td>
-                <td>{a.born}</td>
+                <td>{a.born || null}</td>
                 <td>{a.bookCount}</td>
               </tr>
             ))}
