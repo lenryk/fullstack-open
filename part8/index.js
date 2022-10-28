@@ -1,4 +1,4 @@
-const { ApolloServer, gql } = require("apollo-server");
+const { ApolloServer, gql, UserInputError } = require("apollo-server");
 const { v1: uuid } = require("uuid");
 
 let authors = [
@@ -170,10 +170,14 @@ const resolvers = {
       return book;
     },
     editAuthor: (root, args) => {
-      const author = authors.filter((author) => author.name === args.name);
+      const author = authors.filter(
+        (author) => author.name.toLowerCase() === args.name.toLowerCase()
+      )[0];
 
       if (!author) {
-        return null;
+        throw new UserInputError("Author not found!", {
+          invalidArgs: args.name,
+        });
       }
 
       const updatedAuthor = {
@@ -181,6 +185,7 @@ const resolvers = {
         born: args.setBornTo,
         name: args.name,
       };
+
       return updatedAuthor;
     },
   },
