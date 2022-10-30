@@ -1,5 +1,20 @@
 const { ApolloServer, gql, UserInputError } = require("apollo-server");
 const { v1: uuid } = require("uuid");
+const mongoose = require("mongoose");
+const Author = require("./models/author");
+const Book = require("./models/book");
+require("dotenv").config();
+
+console.log("connecting to", process.env.MONGODB_URL);
+
+mongoose
+  .connect(process.env.MONGODB_URL)
+  .then(() => {
+    console.log("connected to MongoDB");
+  })
+  .catch((error) => {
+    console.log("error connection to MongoDB:", error.message);
+  });
 
 let authors = [
   {
@@ -97,7 +112,7 @@ const typeDefs = gql`
   type Book {
     title: String!
     published: Int!
-    author: String!
+    author: Author!
     id: ID!
     genres: [String!]!
   }
@@ -130,7 +145,7 @@ const typeDefs = gql`
   type Mutation {
     addBook(
       title: String!
-      author: String
+      author: String!
       published: Int!
       genres: [String!]!
     ): Book
@@ -164,9 +179,16 @@ const resolvers = {
     published: (root) => root.published,
   },
   Mutation: {
-    addBook: (root, args) => {
-      const book = { ...args, id: uuid() };
-      books = books.concat(book);
+    addBook: async (root, args) => {
+      const book = new Book({
+        ...args,
+      });
+      try {
+        await book.save();
+      } catch (error) {
+        throw new UserInputError(error.message, { invalidArgs: args });
+      }
+
       return book;
     },
     editAuthor: (root, args) => {
