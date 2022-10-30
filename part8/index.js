@@ -157,7 +157,10 @@ const resolvers = {
   Query: {
     bookCount: () => books.length,
     authorCount: () => authors.length,
-    allBooks: () => books,
+    allBooks: async () => {
+      const response = await Book.find({});
+      return response;
+    },
     allAuthors: () => new Set(books.map((book) => book.author)),
   },
   Book: {
