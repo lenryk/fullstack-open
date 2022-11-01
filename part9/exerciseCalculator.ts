@@ -8,6 +8,12 @@ interface Result {
   average: number;
 }
 
+const target = Number(process.argv[2]);
+const input: Array<number> = [];
+process.argv.forEach((arg, index) => {
+  index > 2 ? input.push(Number(arg)) : null;
+});
+
 const calculateExercises = (days: Array<number>, target: number): Result => {
   return {
     periodLength: days.length,
@@ -29,4 +35,4 @@ const calculateExercises = (days: Array<number>, target: number): Result => {
   };
 };
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+console.log(calculateExercises(input, target));
