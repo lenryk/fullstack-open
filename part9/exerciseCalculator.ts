@@ -8,7 +8,7 @@ interface Result {
   average: number;
 }
 
-const target = Number(process.argv[2]);
+// const target = Number(process.argv[2]);
 const input: Array<number> = [];
 process.argv.forEach((arg, index) => {
   index > 2 ? input.push(Number(arg)) : null;
@@ -35,4 +35,6 @@ const calculateExercises = (days: Array<number>, target: number): Result => {
   };
 };
 
-console.log(calculateExercises(input, target));
+// console.log(calculateExercises(input, target));
+
+export { calculateExercises };
