@@ -1,25 +1,23 @@
 import express from "express";
+import toNewPatientsEntry from "../utils";
+import { getEntries, newPatient } from "../services/patientsServices";
 
 const router = express.Router();
-
-import { getEntries, newPatient } from "../services/patientsServices";
 
 router.get("/", (_req, res) => {
   res.json(getEntries());
 });
 
 router.post("/", (req, res) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { name, dateOfBirth, ssn, gender, occupation } = req.body;
-  const newPatientEntry = newPatient({
-    name,
-    dateOfBirth,
-    ssn,
-    gender,
-    occupation,
-  });
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const newPatientEntry = toNewPatientsEntry(req.body);
+    const addedPatient = newPatient(newPatientEntry);
 
-  res.json(newPatientEntry);
+    res.json(addedPatient);
+  } catch (error) {
+    res.status(400).send(error);
+  }
 });
 
 export default router;
