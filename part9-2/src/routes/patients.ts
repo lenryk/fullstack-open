@@ -1,11 +1,19 @@
 import express from "express";
 import toNewPatientsEntry from "../utils";
-import { getEntries, newPatient } from "../services/patientsServices";
+import {
+  getEntries,
+  newPatient,
+  getFilteredEntries,
+} from "../services/patientsServices";
 
 const router = express.Router();
 
 router.get("/", (_req, res) => {
   res.json(getEntries());
+});
+
+router.get("/:id", (req, res) => {
+  res.json(getFilteredEntries(req.params.id));
 });
 
 router.post("/", (req, res) => {

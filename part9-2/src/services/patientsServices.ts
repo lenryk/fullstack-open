@@ -8,6 +8,10 @@ const getEntries = (): Array<PatientsEntry> => {
   return patients;
 };
 
+const getFilteredEntries = (id: string) => {
+  return patients.filter((patient) => patient.id === id);
+};
+
 const newPatient = (entry: NewPatientsEntry): PatientsEntry => {
   const id = uuid();
   const newPatientEntry = { id, ...entry };
@@ -16,4 +20,4 @@ const newPatient = (entry: NewPatientsEntry): PatientsEntry => {
   return newPatientEntry;
 };
 
-export { getEntries, newPatient };
+export { getEntries, newPatient, getFilteredEntries };
