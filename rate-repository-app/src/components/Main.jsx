@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Platform } from "react-native";
 import RepositoryList from "./RepositoryList";
 import AppBar from "./AppBar";
 import SignIn from "./SignIn";
@@ -21,6 +21,11 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     flexShrink: 1,
+    fontFamily: Platform.select({
+      android: "Arial",
+      ios: "Roboto",
+      default: "System",
+    }),
   },
 });
 
