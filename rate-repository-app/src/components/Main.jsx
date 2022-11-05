@@ -4,6 +4,18 @@ import AppBar from "./AppBar";
 import SignIn from "./SignIn";
 import { Route, Routes, Navigate } from "react-router-native";
 import { Formik } from "formik";
+import * as yup from "yup";
+
+const validationSchema = yup.object().shape({
+  username: yup
+    .string()
+    .min(3, "Username must be at least 3 characters")
+    .required("Username is required"),
+  password: yup
+    .string()
+    .min(3, "Password must be at least 3 characters")
+    .required("Password is required"),
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -25,6 +37,7 @@ const Main = () => {
               <Formik
                 initialValues={{ username: "", password: "" }}
                 onSubmit={(values) => console.log(values)}
+                validationSchema={validationSchema}
               >
                 {({ handleSubmit }) => <SignIn handleSubmit={handleSubmit} />}
               </Formik>
